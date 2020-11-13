@@ -1,0 +1,178 @@
+---
+sudo: required
+dist: bionic
+
+notifications:
+  slack:
+    on_failure: always
+
+matrix:
+  fast_finish: true
+  include:
+
+    - name: "Keycloak on Docker on focal amd64"
+      dist: focal
+      arch: amd64
+      services:
+      - docker
+      language: python
+      # python: 3.7
+      before_install:
+        - pip3 install virtualenv
+        - virtualenv -p $(which python3) ~venvpy3
+        - source ~venvpy3/bin/activate
+        - pip install -r requirements.txt
+      script:
+        - docker run -p 8080:8080 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:11.0.3
+        - docker image ps
+        - docker image ls
+      after_success:
+        - deactivate
+
+    - name: "Keycloak on Docker on bionic amd64"
+      dist: bionic
+      arch: amd64
+      services:
+      - docker
+      language: python
+      # python: 3.7
+      before_install:
+        - pip3 install virtualenv
+        - virtualenv -p $(which python3) ~venvpy3
+        - source ~venvpy3/bin/activate
+        - pip install -r requirements.txt
+      script:
+        - docker run -p 8080:8080 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:11.0.3
+        - docker image ps
+        - docker image ls
+      after_success:
+        - deactivate
+
+
+#TESTED_OK
+    # - name: "istio latest minikube latest  Python 3.7 on bionic amd64" #OK
+    #   dist: bionic
+    #   arch: amd64
+    #   language: python
+    #   python: 3.7
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #     - pip install -r requirements.txt
+    #   script:
+    #     - sudo make deploy-minikube-latest
+    #     - sudo make deploy-istio-latest
+    #   after_success:
+    #     - deactivate
+
+#TESTED_OK
+    # - name: "istio istio-1.6.4 minikube latest Python 3.7 on bionic amd64" #OK
+    #   dist: bionic
+    #   arch: amd64
+    #   language: python
+    #   python: 3.7
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #     - pip install -r requirements.txt
+    #   script:
+    #     - sudo make deploy-minikube-latest
+    #     - sudo make deploy-istio
+    #   after_success:
+    #     - deactivate
+
+    ##PROBLEM#################
+    # - name: "Istio-1.6.4 minikube latest Python 3.7 on focal amd64" #OK
+    #   dist: focal
+    #   arch: amd64
+    #   language: python
+    #   python: 3.7
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #     - pip install -r requirements.txt
+    #   script:
+    #     - sudo make deploy-minikube-latest
+    #     - sudo make deploy-istio
+    #   after_success:
+    #     - deactivate
+
+      #TESTED_OK
+    # - name: "minikube helm kubectl snapped Python 3.7 on bionic amd64" #OK
+    #   dist: bionic
+    #   arch: amd64
+    #   addons:
+    #     snaps:
+    #       - name: helm
+    #         confinement: classic
+    #         channel: latest/stable
+    #       - name: kubectl
+    #         confinement: classic
+    #         channel: latest/stable
+    #       - name: minikube
+    #         confinement: classic
+    #         channel: latest/stable
+    #   language: python
+    #   python: 3.7
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #     - pip install -r requirements.txt
+    #   script:
+    #     - minikube version
+    #     - kubectl version --client
+    #     - helm version
+    #     # - travis_wait 15 sudo make deploy-java-maven &
+    #   after_success:
+    #     - deactivate
+
+    #TESTED OK
+    # - name: "minikube latest  Python 3.7 on xenial" #OK
+    #   dist: bionic
+    #   language: python
+    #   python: 3.7
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #   script:
+    #     - sudo make deploy-minikube-latest
+    #   after_success:
+    #     - deactivate
+
+    #TESTED OK
+    # - name: "minikube kubectl helm snapped Python 3.7 on bionic amd64"
+    #   dist: bionic
+    #   arch: amd64
+    #   addons:
+    #     snaps:
+    #       - name: helm
+    #         confinement: classic
+    #         channel: latest/stable
+    #       - name: kubectl
+    #         confinement: classic
+    #         channel: latest/stable
+    #       - name: minikube
+    #         confinement: classic
+    #         channel: latest/stable
+    #   language: python
+    #   python: 3.7
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #     - pip install -r requirements.txt
+    #   script:
+    #     # - sudo make deploy-minikube
+    #     - minikube version
+    #     - kubectl version --client
+    #     - helm version
+    #     # - travis_wait 15 sudo make deploy-java-maven &
+    #   after_success:
+    #     - deactivate
+
+
