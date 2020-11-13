@@ -24,7 +24,8 @@ matrix:
         - source ~venvpy3/bin/activate
         - pip install -r requirements.txt
       script:
-        - docker run -p 8080:8080 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:11.0.3
+        # Admin console listening on http://127.0.0.1:9990
+        - docker run -p 8080:8080 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:11.0.3 &
         - docker image ps
         - docker image ls
       after_success:
@@ -44,7 +45,8 @@ matrix:
         - source ~venvpy3/bin/activate
         - pip install -r requirements.txt
       script:
-        - docker run -p 8080:8080 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:11.0.3
+        # Admin console listening on http://127.0.0.1:9990
+        - docker run -p 8080:8080 -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin quay.io/keycloak/keycloak:11.0.3 &
         - docker image ps
         - docker image ls
       after_success:
