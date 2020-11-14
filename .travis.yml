@@ -27,12 +27,12 @@ matrix:
         - source ~venvpy3/bin/activate
         - python --version
         - pip install -r requirements.txt
-      # script:
-      # - curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-darwin-amd64 && \
-      # - sudo install skaffold /usr/local/bin/
+      script:
+      - skaffold 
       after_success:
         - deactivate
 
+# https://www.macports.org/
 # https://skaffold.dev/docs/install/    
     - name: "deploy skaffold via MacPorts wo homebrew on macOS 10.15.7 osx xcode12.2"
       os: osx
@@ -45,6 +45,8 @@ matrix:
         - python --version
         - pip install -r requirements.txt
       script:
+      # By default port is installed the directory /opt/local/bin
+      - export PATH=$PATH:/opt/local/bin
       - sudo port install skaffold
       after_success:
         - deactivate
@@ -57,10 +59,8 @@ matrix:
       addons:
         homebrew:
           packages:
-          - node
           - python
-          - git
-          - tar
+          - curl
           update: true
       language: java
       before_install:
@@ -93,38 +93,38 @@ matrix:
         - deactivate
 
 # https://www.keycloak.org/getting-started/getting-started-kube
-    - name: "Keycloak on Kubernetes on focal amd64"
-      dist: focal
-      arch: amd64
-      language: python
-      python: 3.7
-      before_install:
-        - pip3 install virtualenv
-        - virtualenv -p $(which python3) ~venvpy3
-        - source ~venvpy3/bin/activate
-        - pip install -r requirements.txt
-      script:
-        - sudo make deploy-minikube-latest
-        - sudo make deploy-keycloak
-      after_success:
-        - deactivate
+    # - name: "Keycloak on Kubernetes on focal amd64"
+    #   dist: focal
+    #   arch: amd64
+    #   language: python
+    #   python: 3.7
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #     - pip install -r requirements.txt
+    #   script:
+    #     - sudo make deploy-minikube-latest
+    #     - sudo make deploy-keycloak
+    #   after_success:
+    #     - deactivate
 
 # https://www.keycloak.org/getting-started/getting-started-kube
-    - name: "Keycloak on Kubernetes on bionic amd64"
-      dist: bionic
-      arch: amd64
-      language: python
-      python: 3.7
-      before_install:
-        - pip3 install virtualenv
-        - virtualenv -p $(which python3) ~venvpy3
-        - source ~venvpy3/bin/activate
-        - pip install -r requirements.txt
-      script:
-        - sudo make deploy-minikube-latest
-        - sudo make deploy-keycloak
-      after_success:
-        - deactivate
+    # - name: "Keycloak on Kubernetes on bionic amd64"
+    #   dist: bionic
+    #   arch: amd64
+    #   language: python
+    #   python: 3.7
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #     - pip install -r requirements.txt
+    #   script:
+    #     - sudo make deploy-minikube-latest
+    #     - sudo make deploy-keycloak
+    #   after_success:
+    #     - deactivate
 
 # TESTED OK
 # https://www.keycloak.org/getting-started/getting-started-docker
